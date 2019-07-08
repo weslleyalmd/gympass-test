@@ -59,8 +59,4 @@ while option != 7
     puts 'Please select a correct option'
 
   end
-
-  rescue
-    byebug
-    
 end
