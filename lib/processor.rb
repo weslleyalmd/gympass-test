@@ -1,7 +1,6 @@
 require 'terminal-table'
 require_relative 'lap'
 require_relative 'pilot'
-require 'byebug'
 
 class Processor
 
@@ -9,7 +8,6 @@ class Processor
             :avg_speed
 
   def initialize(file_path)
-    file_path = "/home/weslley/projetos/ruby/gympass-test/RaceResultrs.txt"
     @race_file = read(file_path)
     @laps = []
     @pilots = []
@@ -31,14 +29,7 @@ class Processor
   def process
     if @race_file
 
-      @race_file.each do |f_lap|
-        @laps << Lap.new(f_lap)        
-      end
-      
-      @laps.group_by{|l| l.pilot_id}.each do |p_id, laps|
-        @pilots << Pilot.new(p_id, laps)
-      end
-
+      get_laps_and_pilots
       get_race_results
       get_best_lap_by_pilot
       get_race_best_lap
@@ -47,6 +38,16 @@ class Processor
       puts "Race results successfully processed"
     else
       puts "Race results was not defined yet. Please set a valid race results file"
+    end
+  end
+
+  def get_laps_and_pilots
+    @race_file.each do |f_lap|
+      @laps << Lap.new(f_lap)        
+    end
+    
+    @laps.group_by{|l| l.pilot_id}.each do |p_id, laps|
+      @pilots << Pilot.new(p_id, laps)
     end
   end
 
@@ -109,7 +110,3 @@ class Processor
   end
 
 end
-
-
-
-
